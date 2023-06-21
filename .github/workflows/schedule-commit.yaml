@@ -22,7 +22,7 @@ jobs:
           R -e 'install.packages(c("tidyverse", "sf", "data.table", "downloader", "utils"))'
 
       - name: Run R script
-        run: Rscript R/Telecharger_NAIADES.R
+        run: Rscript Telecharger_NAIADES.R
 
       - name: Commit files
         run: |
