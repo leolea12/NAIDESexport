@@ -1,36 +1,29 @@
 name: sitemap_scraping
 
-# Controls when the action will run.
 on:
   schedule:
-    - cron:  '0 * * * *'
+    - cron: '0 * * * *'
 
-
-jobs: 
+jobs:
   autoscrape:
-    # The type of runner that the job will run on
     runs-on: windows-latest
 
-    # Load repo and install R
     steps:
-      - uses: actions/checkout@master
-      - uses: r-lib/actions/setup-r@master
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    # Set-up R
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: 4.x
+
       - name: Install packages
         run: |
-          R -e 'install.packages("tidyverse")'
-          R -e 'install.packages("sf")'
-          R -e 'install.packages("data.table")'
-          R -e 'install.packages("downloader")'
-          R -e 'install.packages("utils")'
-    # Run R script
-      - name: Generate data
-          run:|
-          source("R/Telecharger_NAIADES.R")
-          shell:Rscript {0} 
-      
- # Add new files in data folder, commit along with other modified files, push
+          R -e 'install.packages(c("tidyverse", "sf", "data.table", "downloader", "utils"))'
+
+      - name: Run R script
+        run: Rscript R/Telecharger_NAIADES.R
+
       - name: Commit files
         run: |
           git config --local user.name actions-user
