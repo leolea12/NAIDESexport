@@ -1,36 +1,42 @@
+# Hourly scraping
 name: sitemap_scraping
 
+# Controls when the action will run.
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron:  '0 * * * *'
 
-jobs:
+
+jobs: 
   autoscrape:
-    runs-on: windows-latest
+    # The type of runner that the job will run on
+    runs-on: macos-latest
 
+    # Load repo and install R
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - uses: actions/checkout@master
+    - uses: r-lib/actions/setup-r@master
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v1
-        with:
-          r-version: 4.x
-
-      - name: Install packages
-        run: |
-          R -e 'install.packages(c("tidyverse", "sf", "data.table", "downloader", "utils"))'
-
-      - name: Run R script
-        run: Rscript Telecharger_NAIADES.R
-
-      - name: Commit files
-        run: |
-          git config --local user.name actions-user
-          git config --local user.email "actions@github.com"
-          git add data/*
-          git commit -am "NAIADES $(date)"
-          git push origin main
-        env:
-          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
-          username: github-actions
+    # Set-up R
+    - name: Install packages
+      run: |
+        R -e 'install.packages("tidyverse")'
+        R -e 'install.packages("sf")'
+        R -e 'install.packages("data.table")'
+        R -e 'install.packages("utils")'
+        R -e 'install.packages("downloader")'
+    # Run R script
+    - name: Scrape
+      run: Rscript Telecharger_NAIADES.R
+      
+ # Add new files in data folder, commit along with other modified files, push
+    - name: Commit files
+      run: |
+        git config --local user.name actions-user
+        git config --local user.email "actions@github.com"
+        git add data_raw/*
+        git commit -am "GH ACTION Headlines $(date)"
+        git push origin main
+      env:
+        REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+        username: github-actions
