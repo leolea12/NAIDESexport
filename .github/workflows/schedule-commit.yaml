@@ -24,11 +24,6 @@ jobs:
         R -e 'install.packages("data.table")'
         R -e 'install.packages("utils")'
         R -e 'install.packages("downloader")'
-      
-    # Copy data files to the appropriate directory
-    - name: Copy data files
-      run: |
-        cp data/* R/
         
     # Run R script
     - name: Scrape
