@@ -15,19 +15,19 @@ library(data.table)
 download(
   "https://naiades.eaufrance.fr/reports/reportsperyear/HB/Naiades_Export_France_Entiere_HB.zip",
   # "https://naiades.eaufrance.fr/reports/reportsperyear/HM/Naiades_Export_France_Entiere_HM.zip",
-  dest = "data/dataset.zip",
+  dest = "R/dataset.zip",
   mode = "wb"
 )
-unzip("data/dataset.zip",
+unzip("R/dataset.zip",
       exdir = "./data")
-file.remove("data/cep.csv")
-file.remove("data/operation.csv")
-file.remove("data/resultat.csv")
-file.remove("data/DescriptionDonneesHB.pdf")
+file.remove("R/cep.csv")
+file.remove("R/operation.csv")
+file.remove("R/resultat.csv")
+file.remove("R/DescriptionDonneesHB.pdf")
 
 france_metropolitaine <- st_read("data/FRA_adm0.shp")
 
-Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
+Diatom <- as_tibble(fread("R/fauneflore.csv")) %>%
   dplyr::select(
     "CODE_STATION" = CdStationMesureEauxSurface,
     "Nom_groupe_taxo" = LbSupport,
@@ -66,7 +66,7 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
   left_join(
     as_tibble(
       read.csv2(
-        "data/stations.csv",
+        "R/stations.csv",
         stringsAsFactors = FALSE,
         quote = "",
         na.strings = c("", "NA")
@@ -99,7 +99,7 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
                 commune) %>%
   tidyr::extract(geometry, c("long", "lat"), "\\((.*), (.*)\\)", convert = TRUE) %>%
   left_join(as_tibble(
-    read.csv2("data/table_transcodage.csv", stringsAsFactors = FALSE)
+    read.csv2("R/table_transcodage.csv", stringsAsFactors = FALSE)
   ) %>%
     dplyr::select(taxon = "abre", True_name = "CodeValid"),
   by = "taxon") %>%
@@ -107,7 +107,7 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
   dplyr::select(-True_name) %>%
   filter(!is.na(taxon)) %>%
   left_join(
-    read.csv2("data/table_transcodage.csv", stringsAsFactors = FALSE) %>%
+    read.csv2("R/table_transcodage.csv", stringsAsFactors = FALSE) %>%
       select(taxon = CodeValid, full_name = name_valid) %>% distinct() %>%
       mutate(full_name = sub("\\_g.*", "", full_name)),
     by = "taxon"
@@ -124,4 +124,4 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
     by = "taxon"
   )
 
-save(Diatom, file = paste0("data_raw/Donnees_compiles",Sys.Date(),".RData"))
+save(Diatom, file = paste0("R/Donnees_compiles",Sys.Date(),".RData"))
