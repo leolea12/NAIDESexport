@@ -24,9 +24,15 @@ jobs:
         R -e 'install.packages("data.table")'
         R -e 'install.packages("utils")'
         R -e 'install.packages("downloader")'
+      
+    # Copy data files to the appropriate directory
+    - name: Copy data files
+      run: |
+        cp data/* R/
+        
     # Run R script
     - name: Scrape
-      run: Rscript Telecharger_NAIADES.R
+      run: Rscript R/Telecharger_NAIADES.R
       
     # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
