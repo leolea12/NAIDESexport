@@ -15,7 +15,7 @@ library(data.table)
 download(
   "https://naiades.eaufrance.fr/reports/reportsperyear/HB/Naiades_Export_France_Entiere_HB.zip",
   # "https://naiades.eaufrance.fr/reports/reportsperyear/HM/Naiades_Export_France_Entiere_HM.zip",
-  dest = "R/dataset.zip",
+  dest = "data/dataset.zip",
   mode = "wb"
 )
 unzip("data/dataset.zip",
