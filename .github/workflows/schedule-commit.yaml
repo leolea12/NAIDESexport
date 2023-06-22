@@ -1,11 +1,10 @@
-# Hourly scraping
+# Every 10 minutes scraping
 name: sitemap_scraping
 
 # Controls when the action will run.
 on:
   schedule:
-    - cron:  '0 * * * *'
-
+    - cron: '*/8 * * * *'
 
 jobs: 
   autoscrape:
@@ -15,7 +14,7 @@ jobs:
     # Load repo and install R
     steps:
     - uses: actions/checkout@master
-    - uses: r-lib/actions/setup-r@master
+    - uses: r-lib/actions/setup-r@v1.2.0
 
     # Set-up R
     - name: Install packages
@@ -29,7 +28,7 @@ jobs:
     - name: Scrape
       run: Rscript Telecharger_NAIADES.R
       
- # Add new files in data folder, commit along with other modified files, push
+    # Add new files in data folder, commit along with other modified files, push
     - name: Commit files
       run: |
         git config --local user.name actions-user
