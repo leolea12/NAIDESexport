@@ -19,11 +19,11 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-        'install.packages("utils")' 
-        'install.packages("sf")' 
-        'install.packages("downloader", repos = "https://cloud.r-project.org/")'
-        'install.packages("data.table")' 
-        'install.packages("tidyverse")' 
+        install.packages("utils")
+        install.packages("sf")
+        install.packages("downloader", repos = "https://cloud.r-project.org/")
+        install.packages("data.table") 
+        install.packages("tidyverse") 
         
     # Run R script
     - name: Scrape
