@@ -20,9 +20,9 @@ jobs:
     - name: Install packages
       run: |
         Rscript -e 'install.packages("tidyverse")' 
-        Rscript -e 'install.packages("tidyverse")' 
-        Rscript -e 'install.packages("tidyverse")' 
-        Rscript -e 'install.packages("tidyverse")' 
+        Rscript -e 'install.packages("sf")' 
+        Rscript -e 'install.packages("downloader")' 
+        Rscript -e 'install.packages("data.table")' 
         Rscript -e 'install.packages("tidyverse")' 
         
     # Run R script
