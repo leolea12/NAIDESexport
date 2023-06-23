@@ -4,7 +4,7 @@ name: sitemap_scraping
 # Controls when the action will run.
 on:
   schedule:
-    - cron: '*/1000 * * * *'
+    - cron: '*/10 * * * *'
 
 jobs: 
   autoscrape:
@@ -19,11 +19,11 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-        R -e 'install.packages("tidyverse")'
-        R -e 'install.packages("sf")'
-        R -e 'install.packages("data.table")'
-        R -e 'install.packages("utils")'
-        R -e 'install.packages("downloader")'
+        Rscript -e 'install.packages("tidyverse")' 
+        Rscript -e 'install.packages("tidyverse")' 
+        Rscript -e 'install.packages("tidyverse")' 
+        Rscript -e 'install.packages("tidyverse")' 
+        Rscript -e 'install.packages("tidyverse")' 
         
     # Run R script
     - name: Scrape
