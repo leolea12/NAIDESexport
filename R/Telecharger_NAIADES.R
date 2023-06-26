@@ -12,6 +12,8 @@ library(data.table)
 
 `%notin%` <- Negate(`%in%`)
 
+options(timeout = 600)
+
 download(
   "https://naiades.eaufrance.fr/reports/reportsperyear/HB/Naiades_Export_France_Entiere_HB.zip",
   # "https://naiades.eaufrance.fr/reports/reportsperyear/HM/Naiades_Export_France_Entiere_HM.zip",
