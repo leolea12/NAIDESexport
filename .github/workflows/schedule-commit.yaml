@@ -9,7 +9,7 @@ on:
 jobs: 
   autoscrape:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    runs-on: macos-latest
 
     # Load repo and install R
     steps:
@@ -19,11 +19,11 @@ jobs:
     # Set-up R
     - name: Install packages
       run: |
-        install.packages("utils")
-        install.packages("sf")
-        install.packages("downloader")
-        install.packages("data.table") 
-        install.packages("tidyverse") 
+        R -e "install.packages('utils')"
+        R -e "install.packages('sf')"
+        R -e "install.packages('downloader')"
+        R -e "install.packages('data.table')"
+        R -e "install.packages('tidyverse')" 
         
     # Run R script
     - name: Scrape
@@ -35,7 +35,7 @@ jobs:
         git config --local user.name actions-user
         git config --local user.email "actions@github.com"
         git add data_raw/*
-        git commit -am "GH ACTION Headlines $(date)"
+        git commit -am "Naiades $(date)"
         git push origin main
       env:
         REPO_KEY: ${{secrets.GITHUB_TOKEN}}
