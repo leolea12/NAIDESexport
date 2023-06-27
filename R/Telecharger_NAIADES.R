@@ -125,10 +125,4 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
     by = "taxon"
   )
 
-# Vérifier si le fichier existe déjà
-if (file.exists("data_raw/Donnees_compiles.RData")) {
-  # Supprimer le fichier existant
-  file.remove("data_raw/Donnees_compiles.RData")
-}
-
-save(Diatom, file = "data_raw/Donnees_compiles.RData")
+save(Diatom, file = paste0("data_raw/Donnees_compiles",Sys.date(),".RData"))
