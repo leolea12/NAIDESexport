@@ -125,7 +125,8 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
     by = "taxon"
   )
 
-save(Diatom, file = "data_raw/Donnees_compiles.RData" )
+
+save(Diatom, file = paste0("data_raw/data_", make.names(Sys.time()), ".Rda"))
 
 file.remove("data/stations.csv")
 file.remove("data/fauneflore.csv")
