@@ -138,7 +138,8 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
       group_by(grp, DATE, CODE_STATION) %>%
       mutate(taxons_apparies = map_chr(row_number(), ~paste(unique(taxons_apparies[-.x]), collapse = " / "))) %>%
       ungroup() %>%
-      dplyr::mutate(taxons_apparies = ifelse(taxons_apparies == "", "Aucun", taxons_apparies))
+      dplyr::mutate(taxons_apparies = ifelse(taxons_apparies == "", "Aucun", taxons_apparies)) %>%
+mutate(full_name = ifelse(full_name == "Aucun", paste0(Nom_latin_taxon, " (", taxon,")"), full_name))
 
 
 save(Diatom, file = paste0("data_raw/data_", make.names(Sys.time()), ".Rda"))
