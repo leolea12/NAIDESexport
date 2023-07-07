@@ -123,21 +123,22 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
       mutate(taxons_apparies = paste(list, collapse = " / ")) %>%
       select(-abre,-name,-list) %>% distinct(),
     by = "taxon"
-  ) %>% mutate(CodeValid = full_name) %>%
+  ) %>% 
+      mutate(CodeValid = full_name) %>%
       separate_rows(taxons_apparies, sep = " / ") %>%
-      mutate(taxons_apparies = paste0(str_sub(taxons_apparies,  start = 6)," (", str_sub(taxons_apparies,  start = 1, end = 4),")")) %>%
+      group_by(CodeValid) %>%
+      mutate(taxons_apparies = ifelse(is.na(taxons_apparies) == TRUE, "Aucun", paste0(str_sub(taxons_apparies,  start = 6)," (", str_sub(taxons_apparies,  start = 1, end = 4),")"))) %>%
       group_by(full_name) %>%
       mutate(grp = cur_group_id()) %>%
-      unite(merged_column, full_name, taxons_apparies, sep = " / ") %>%
-      separate_rows(merged_column, sep = " / ") %>%
-      distinct(merged_column, CODE_STATION, DATE, .keep_all = TRUE) %>%
+      mutate(taxons_apparies = ifelse(taxons_apparies == "Aucun", taxons_apparies, paste0(full_name, " / ", taxons_apparies))) %>%
+      separate_rows(taxons_apparies, sep = " / ") %>%
+      distinct(taxons_apparies, CODE_STATION, DATE, .keep_all = TRUE) %>%
       ungroup() %>%
       group_by(grp, DATE, CODE_STATION) %>%
-      mutate(taxons_apparies = map_chr(row_number(), ~paste(unique(merged_column[-.x]), collapse = " / "))) %>%
+      mutate(taxons_apparies = map_chr(row_number(), ~paste(unique(taxons_apparies[-.x]), collapse = " / "))) %>%
       ungroup() %>%
-      mutate(merged_column = ifelse(merged_column == "NA (NA)", CodeValid, merged_column),
-             taxons_apparies = ifelse(taxons_apparies == "NA (NA)", "Aucun", taxons_apparies)) %>%
-      rename(full_name = merged_column)
+      dplyr::mutate(taxons_apparies = ifelse(taxons_apparies == "", "Aucun", taxons_apparies)) %>%
+      distinct(CODE_STATION, DATE, taxon, .keep_all = TRUE)
 
 
 save(Diatom, file = paste0("data_raw/data_", make.names(Sys.time()), ".Rda"))
