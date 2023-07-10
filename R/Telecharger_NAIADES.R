@@ -115,7 +115,7 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
   ) %>%
   mutate(full_name = str_replace_all(full_name, "[^[:alnum:]]", " ")) %>%
   mutate(full_name = paste0(full_name, " ", "(", taxon, ")")) %>%
-  mutate(lon = round(long, 2), lat = round(lat, 2)) %>%
+  mutate(lon = round(long, 6), lat = round(lat, 6)) %>%
   left_join(
     read.csv2("data/table_transcodage.csv", stringsAsFactors = FALSE) %>%
       select(abre, name, taxon = CodeValid) %>% unique() %>%
