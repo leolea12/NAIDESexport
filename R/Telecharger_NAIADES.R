@@ -91,7 +91,7 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
   sf::st_as_sf(coords = c("longitude", "latitude"), crs = 2154) %>%
   st_transform(geometry, crs = 4326) %>%
   st_intersection(france_metropolitaine) %>%
-st_jitter(factor = 0.001) %>%
+st_jitter(factor = 0.0001) %>%
   dplyr::select(CODE_STATION,
                 DATE,
                 SANDRE,
