@@ -91,7 +91,7 @@ Diatom <- as_tibble(fread("data/fauneflore.csv")) %>%
   sf::st_as_sf(coords = c("longitude", "latitude"), crs = 2154) %>%
   st_transform(geometry, crs = 4326) %>%
   st_intersection(france_metropolitaine) %>%
-st_jitter(factor = 0.0001) %>%
+st_jitter(factor = 0.00001) %>%
   dplyr::select(CODE_STATION,
                 DATE,
                 SANDRE,
@@ -116,7 +116,7 @@ st_jitter(factor = 0.0001) %>%
   ) %>%
   mutate(full_name = str_replace_all(full_name, "[^[:alnum:]]", " ")) %>%
   mutate(full_name = paste0(full_name, " ", "(", taxon, ")")) %>%
-  mutate(lon = round(long, 6), lat = round(lat, 6)) %>%
+  mutate(lon = round(long, 10), lat = round(lat, 10)) %>%
   left_join(
     read.csv2("data/table_transcodage.csv", stringsAsFactors = FALSE) %>%
       select(abre, name, taxon = CodeValid) %>% unique() %>%
